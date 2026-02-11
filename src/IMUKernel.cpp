@@ -64,7 +64,31 @@ void il::IMUKernel::update()
     uint8_t id = 0;
     while (_serial.available() > 0) {
         id = readSerialData();
-        if (_callback != nullptr) _callback(id, &_orientation);
+        if (_callback != nullptr) {
+            switch (id) {
+            case MSG_ORIENTATION:
+                _callback(id, &_orientation);
+                break;
+            case MSG_GA:
+                _callback(id, &_GA_data);
+                break;
+            case MSG_GA_M:
+                _callback(id, &_GA_m_data);
+                break;
+            case MSG_GAA:
+                _callback(id, &_GAA_data);
+                break;
+            case MSG_GAA_M:
+                _callback(id, &_GAA_m_data);
+                break;
+            case MSG_QUAT:
+                _callback(id, &_quaternion);
+                break;
+            case MSG_CALIB_HR:
+                _callback(id, &_hrdata);
+                break;
+            }
+        }
     }
 }
 
